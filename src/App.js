@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import Hello from "./Cards";
 import './App.css';
 
 class App extends Component {
@@ -20,6 +21,12 @@ class App extends Component {
             Learn React
           </a>
         </header>
+        <section>
+          <h1>Feira Fruta</h1>
+          <h2>Hoje</h2>
+          <h3>A sugestao é levar os seguintes produtos:</h3>
+          <Hello />
+        </section>
       </div>
     );
   }
