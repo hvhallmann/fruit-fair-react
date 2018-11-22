@@ -1,9 +1,28 @@
 import React, { Component } from 'react';
+import Card from './Card';
 
-class Hello extends Component {
+class Cards extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: props.cardsDataProvider
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ data: nextProps.dataProvider });
+  }
+  
   render() {
-      return <h1>Hello world!</h1>;
+    const listItems = this.state.data && this.state.data.map((name, index) =>
+      <Card key={name + index} className="column col-3" title={name} content="Hello" />);
+    return (
+      <div className="container">
+        <div className="columns">
+          {listItems}
+        </div>
+      </div>
+    );
   }
 }
 
-export default Hello;
+export default Cards;

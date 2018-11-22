@@ -1,4 +1,4 @@
-const db =  [ { name: 'FRUTAS', season: [], isClass: true, family: 'FRUTAS' },
+const db = [ { name: 'FRUTAS', season: [], isClass: true, family: 'FRUTAS' },
   { name: 'Abacate',
     season: 
      [ 'Medio',
@@ -1027,3 +1027,5 @@ const db =  [ { name: 'FRUTAS', season: [], isClass: true, family: 'FRUTAS' },
     season: [],
     isClass: false,
     family: 'HORTALIÇAS-TUBEROSAS' } ]
+
+export default db;
