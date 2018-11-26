@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import imgCat from './assets/images/captura.png';
+import imgCat from './assets/images/uva-pera.png';
+import cardss from './Card.css';
 
+// A imagem tem 11,3cm width por 8,51cm d height
+// com resolution de 7,87 pixel/cml
+// 18KB
 class Card extends Component {
   render() {
-    return <div className="card">
-    <div className="card-image">
+    return <div className="card-size">
+    <div className="card-image img-align">
       <img src={imgCat} alt="cat" className="img-responsive"/>
     </div>
-    <div className="card-header">
-      <div className="card-title h5">{this.props.title}</div>
-      <div className="card-subtitle text-gray">{this.props.subtitle}</div>
-    </div>
-    <div className="card-body">
-      {this.props.content}}
-    </div>
     <div className="card-footer">
-      <button className="btn btn-primary">...</button>
+      <div className="card-title h7">{this.props.title}</div>
     </div>
   </div>;
   }

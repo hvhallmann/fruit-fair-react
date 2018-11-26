@@ -14,9 +14,9 @@ class Cards extends Component {
   
   render() {
     const listItems = this.state.data && this.state.data.map((name, index) =>
-      <Card key={name + index} className="column col-3" title={name} content="Hello" />);
+      <Card key={name + index} className="column col-xs-3" title={name} />);
     return (
-      <div className="container">
+      <div className="container grid-xs">
         <div className="columns">
           {listItems}
         </div>
