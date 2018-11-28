@@ -9,29 +9,64 @@ class App extends Component {
     super(props);
     this.db = staticDb;
     this.state = {
-      cardsDataProvider: []
+      greenCardsDataProvider: [],
+      greenCardsSecTierDataProvider: [],
+      greenCardsThirdTierDataProvider: [],
+      yellowCardsDataProvider: []
     }
   }
   componentDidMount() {
     this.identifyCards(this.db);
   }
+  getPreviousMonth(currentMonth) {
+    let previousMouth = currentMonth - 1;
+    if (previousMouth === -1) previousMouth = 0;
+    return previousMouth;
+  }
+  getNextMonth(currentMonth) {
+    let nextMounth = currentMonth + 1;
+    if (nextMounth === 12) nextMounth = 0;
+    return nextMounth;
+  }
   identifyCards(database) {
     if(!database) return;
     //reverse db
-    const listCards = [];
+    const firstListCards = [];
+    let secListCards = [];
+    let thirdListCards = [];
+    const yellowFirstListCards = [];
+    let yellowSecListCards = [];
+    let yellowThirdListCards = [];
     database.reverse().forEach(element => {
-      const itemsToIterate = element.season.reverse();
-      //iterate over season backwards
-      for (var i = 0, len = itemsToIterate.length; i < len; i++) {
-        var item = itemsToIterate[i];
-        if (item === 'Forte' && (new Date()).getMonth() === i ) {
-          // console.log('hj esta bom para', element.name);
-          listCards.push(element.name);
+      const itemsToIterate = element.season;
+
+      for (var monthIter = 0, len = itemsToIterate.length; monthIter < len; monthIter++) {
+        var item = itemsToIterate[monthIter];
+        const currentMonth = new Date().getMonth();
+        if (item === 'Forte' && (currentMonth === monthIter )) {
+          firstListCards.push(element.name);
+        } else if (item === 'Forte' && (this.getPreviousMonth(currentMonth) === monthIter )) {
+          secListCards.push(element.name);
+        }  else if (item === 'Forte' && (this.getNextMonth(currentMonth) === monthIter )) {
+          thirdListCards.push(element.name);
+        }
+        // yellow cases
+        if (item === 'Medio' && (currentMonth === monthIter )) {
+          yellowFirstListCards.push(element.name);
+        } else if (item === 'Medio' && (this.getPreviousMonth(currentMonth) === monthIter )) {
+          yellowSecListCards.push(element.name);
+        }  else if (item === 'Medio' && (this.getNextMonth(currentMonth) === monthIter )) {
+          yellowThirdListCards.push(element.name);
         }
       }
     });
-    this.setState({cardsDataProvider: listCards});
-    console.log('carregado co ', listCards);
+    secListCards = secListCards.filter(val => !firstListCards.includes(val));
+    thirdListCards = thirdListCards.filter(val => !firstListCards.includes(val));
+    thirdListCards.concat(thirdListCards.filter(val => !secListCards.includes(val)));
+    
+    this.setState({greenCardsDataProvider: firstListCards});
+    this.setState({greenCardsSecTierDataProvider: secListCards});
+    this.setState({greenCardsThirdTierDataProvider: thirdListCards});
   }
   render() {
     return (
@@ -39,8 +74,19 @@ class App extends Component {
         <section>
           <h1>Feira Fruta</h1>
           <h2>Hoje</h2>
-          <h3>A sugestao é levar2 os seguintes produtos:</h3>
-          <Cards dataProvider={this.state.cardsDataProvider} />
+          <h3>A sugestao é levar os seguintes produtos:</h3>
+          <Cards dataProvider={this.state.greenCardsDataProvider} />
+        </section>
+        <section>
+          <h3>Estes Devem estar bons tambem do mes passado:</h3>
+          <Cards dataProvider={this.state.greenCardsSecTierDataProvider} />
+        </section>
+        <section>
+          <h3>Estes estao saindo do forno para o proximo mes!</h3>
+          <Cards dataProvider={this.state.greenCardsThirdTierDataProvider} />
+        </section>
+        <section>
+          <h3>Estes outros produtos voce ainda consegue encontrar:</h3>
         </section>
         <button className="btn">default button</button>
         {/* <header className="App-header">
