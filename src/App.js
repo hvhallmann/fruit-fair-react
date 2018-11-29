@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
-import Cards from "./Cards";
 import staticDb from "./db/db.js";
+import Card from './Card';
 import './App.css';
 
 class App extends Component {
@@ -44,19 +43,20 @@ class App extends Component {
         var item = itemsToIterate[monthIter];
         const currentMonth = new Date().getMonth();
         if (item === 'Forte' && (currentMonth === monthIter )) {
-          firstListCards.push(element.name);
-        } else if (item === 'Forte' && (this.getPreviousMonth(currentMonth) === monthIter )) {
-          secListCards.push(element.name);
-        }  else if (item === 'Forte' && (this.getNextMonth(currentMonth) === monthIter )) {
-          thirdListCards.push(element.name);
+          firstListCards.push(element);
         }
+        // else if (item === 'Forte' && (this.getPreviousMonth(currentMonth) === monthIter )) {
+        //   secListCards.push(element);
+        // }  else if (item === 'Forte' && (this.getNextMonth(currentMonth) === monthIter )) {
+        //   thirdListCards.push(element);
+        // }
         // yellow cases
         if (item === 'Medio' && (currentMonth === monthIter )) {
-          yellowFirstListCards.push(element.name);
+          yellowFirstListCards.push(element);
         } else if (item === 'Medio' && (this.getPreviousMonth(currentMonth) === monthIter )) {
-          yellowSecListCards.push(element.name);
+          yellowSecListCards.push(element);
         }  else if (item === 'Medio' && (this.getNextMonth(currentMonth) === monthIter )) {
-          yellowThirdListCards.push(element.name);
+          yellowThirdListCards.push(element);
         }
       }
     });
@@ -69,15 +69,23 @@ class App extends Component {
     this.setState({greenCardsThirdTierDataProvider: thirdListCards});
   }
   render() {
+    const listItems = this.state.greenCardsDataProvider && this.state.greenCardsDataProvider.map((elem, index) =>
+      <Card key={elem.name + index} className="column col-xs-3" title={elem.name} image={elem.key} />
+    );
     return (
       <div className="App">
         <section>
           <h1>Feira Fruta</h1>
           <h2>Hoje</h2>
           <h3>A sugestao é levar os seguintes produtos:</h3>
-          <Cards dataProvider={this.state.greenCardsDataProvider} />
+          <div className="container grid-xs">
+            <div className="columns">
+              {listItems}
+            </div>
+          </div>
+          {/* <Cards dataProvider={this.state.greenCardsDataProvider} /> */}
         </section>
-        <section>
+        {/* <section>
           <h3>Estes Devem estar bons tambem do mes passado:</h3>
           <Cards dataProvider={this.state.greenCardsSecTierDataProvider} />
         </section>
@@ -87,22 +95,7 @@ class App extends Component {
         </section>
         <section>
           <h3>Estes outros produtos voce ainda consegue encontrar:</h3>
-        </section>
-        <button className="btn">default button</button>
-        {/* <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header> */}
+        </section> */}
       </div>
     );
   }

@@ -4,6 +4,7 @@ import Card from './Card';
 class Cards extends Component {
   constructor(props) {
     super(props);
+    // const { name, ...other } = props.cardsDataProvider
     this.state = {
       data: props.cardsDataProvider
     };
@@ -13,12 +14,12 @@ class Cards extends Component {
   }
   
   render() {
-    const listItems = this.state.data && this.state.data.map((name, index) =>
-      <Card key={name + index} className="column col-xs-3" title={name} />);
+    const listItems = this.props && this.props.map((elem, index) =>
+      <Card key={elem.key} className="column col-xs-3" image={elem.image} title={elem.name} />);
     return (
       <div className="container grid-xs">
         <div className="columns">
-          {listItems}
+          {...this.props}
         </div>
       </div>
     );

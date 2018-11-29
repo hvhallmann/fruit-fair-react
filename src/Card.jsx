@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import imgCat from './assets/images/uva-pera.png';
+// import * as img from './assets/images/';
 import cardss from './Card.css';
 
 // A imagem tem 11,3cm width por 8,51cm d height
@@ -9,7 +9,7 @@ class Card extends Component {
   render() {
     return <div className="card-size">
     <div className="card-image img-align">
-      <img src={imgCat} alt="cat" className="img-responsive"/>
+      <img src={require('./assets/images/'+this.props.image+'.png')} alt="cat" className="img-responsive"/>
     </div>
     <div className="card-footer">
       <div className="card-title h7">{this.props.title}</div>
