@@ -3,6 +3,9 @@ import staticDb from "./db/db.js";
 import Card from './Card';
 import './App.css';
 
+// you can read more on
+// https://www.smashingmagazine.com/2018/11/guide-pwa-progressive-web-applications/
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -42,20 +45,24 @@ class App extends Component {
       for (var monthIter = 0, len = itemsToIterate.length; monthIter < len; monthIter++) {
         var item = itemsToIterate[monthIter];
         const currentMonth = new Date().getMonth();
-        if (item === 'Forte' && (currentMonth === monthIter )) {
+        if (item === 'Forte' && (currentMonth === monthIter )) {   
           firstListCards.push(element);
+        } 
+        else if (item === 'Forte' && (this.getPreviousMonth(currentMonth) === monthIter )) {
+          secListCards.push(element);
+        }  
+        else if (item === 'Forte' && (this.getNextMonth(currentMonth) === monthIter )) {
+          thirdListCards.push(element);
         }
-        // else if (item === 'Forte' && (this.getPreviousMonth(currentMonth) === monthIter )) {
-        //   secListCards.push(element);
-        // }  else if (item === 'Forte' && (this.getNextMonth(currentMonth) === monthIter )) {
-        //   thirdListCards.push(element);
-        // }
         // yellow cases
         if (item === 'Medio' && (currentMonth === monthIter )) {
+          console.log('here with', element.name);
           yellowFirstListCards.push(element);
         } else if (item === 'Medio' && (this.getPreviousMonth(currentMonth) === monthIter )) {
+          console.log('here with', element.name);
           yellowSecListCards.push(element);
         }  else if (item === 'Medio' && (this.getNextMonth(currentMonth) === monthIter )) {
+          console.log('here with', element.name);
           yellowThirdListCards.push(element);
         }
       }
@@ -72,6 +79,12 @@ class App extends Component {
     const listItems = this.state.greenCardsDataProvider && this.state.greenCardsDataProvider.map((elem, index) =>
       <Card key={elem.name + index} className="column col-xs-3" title={elem.name} image={elem.key} />
     );
+    const secListItems = this.state.greenCardsSecTierDataProvider && this.state.greenCardsSecTierDataProvider.map((elem, index) =>
+      <Card key={elem.name + index} className="column col-xs-3" title={elem.name} image={elem.key} />
+    );
+    const thirdListItems = this.state.greenCardsThirdTierDataProvider && this.state.greenCardsThirdTierDataProvider.map((elem, index) =>
+      <Card key={elem.name + index} className="column col-xs-3" title={elem.name} image={elem.key} />
+    );
     return (
       <div className="App">
         <section>
@@ -79,20 +92,28 @@ class App extends Component {
           <h2>Hoje</h2>
           <h3>A sugestao é levar os seguintes produtos:</h3>
           <div className="container grid-xs">
-            <div className="columns">
+            <div className="columns-custom">
               {listItems}
             </div>
           </div>
-          {/* <Cards dataProvider={this.state.greenCardsDataProvider} /> */}
-        </section>
-        {/* <section>
-          <h3>Estes Devem estar bons tambem do mes passado:</h3>
-          <Cards dataProvider={this.state.greenCardsSecTierDataProvider} />
         </section>
         <section>
-          <h3>Estes estao saindo do forno para o proximo mes!</h3>
-          <Cards dataProvider={this.state.greenCardsThirdTierDataProvider} />
+          <h3>Bons do mes anterior:</h3>
+          <div className="container grid-xs">
+            <div className="columns-custom">
+              {secListItems}
+            </div>
+          </div>
         </section>
+        <section>
+          <h3>Saindo do forno para o proximo mes!</h3>
+          <div className="container grid-xs">
+            <div className="columns-custom">
+              {thirdListItems}
+            </div>
+          </div>
+        </section>
+        {/*
         <section>
           <h3>Estes outros produtos voce ainda consegue encontrar:</h3>
         </section> */}
