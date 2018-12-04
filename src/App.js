@@ -30,6 +30,11 @@ class App extends Component {
     if (nextMounth === 12) nextMounth = 0;
     return nextMounth;
   }
+  uniqueArray(arrArg) {
+    return arrArg.filter(function(elem, pos,arr) {
+      return arr.indexOf(elem) === pos;
+    });
+  };
   identifyCards(database) {
     if(!database) return;
     //reverse db
@@ -47,29 +52,36 @@ class App extends Component {
         const currentMonth = new Date().getMonth();
         if (item === 'Forte' && (currentMonth === monthIter )) {   
           firstListCards.push(element);
+          continue;
         } 
         else if (item === 'Forte' && (this.getPreviousMonth(currentMonth) === monthIter )) {
           secListCards.push(element);
         }  
         else if (item === 'Forte' && (this.getNextMonth(currentMonth) === monthIter )) {
-          thirdListCards.push(element);
+          // if (firstListCards.findIndex(el => el.name === element.name) === -1 &&
+          // secListCards.findIndex(el => el.name === element.name) === -1) {
+            console.log('here with', element.name);
+            thirdListCards.push(element);
+          // }
         }
         // yellow cases
         if (item === 'Medio' && (currentMonth === monthIter )) {
-          console.log('here with', element.name);
+          // console.log('here with', element.name);
           yellowFirstListCards.push(element);
         } else if (item === 'Medio' && (this.getPreviousMonth(currentMonth) === monthIter )) {
-          console.log('here with', element.name);
+          // console.log('here with', element.name);
           yellowSecListCards.push(element);
         }  else if (item === 'Medio' && (this.getNextMonth(currentMonth) === monthIter )) {
-          console.log('here with', element.name);
+          // console.log('here with', element.name);
           yellowThirdListCards.push(element);
         }
       }
     });
     secListCards = secListCards.filter(val => !firstListCards.includes(val));
-    thirdListCards = thirdListCards.filter(val => !firstListCards.includes(val));
-    thirdListCards.concat(thirdListCards.filter(val => !secListCards.includes(val)));
+    // thirdListCards = thirdListCards.filter(val => !firstListCards.includes(val));
+    // thirdListCards.concat(thirdListCards.filter(val => !secListCards.includes(val)));
+    // thirdListCards = this.uniqueArray(thirdListCards.concat(firstListCards));
+    // thirdListCards = this.uniqueArray(thirdListCards.concat(secListCards));
     
     this.setState({greenCardsDataProvider: firstListCards});
     this.setState({greenCardsSecTierDataProvider: secListCards});
@@ -85,10 +97,19 @@ class App extends Component {
     const thirdListItems = this.state.greenCardsThirdTierDataProvider && this.state.greenCardsThirdTierDataProvider.map((elem, index) =>
       <Card key={elem.name + index} className="column col-xs-3" title={elem.name} image={elem.key} />
     );
+    //https://stackoverflow.com/questions/38268573/how-to-print-each-letter-in-different-color-in-css-html
     return (
       <div className="App">
         <section>
           <h1>Feira Fruta</h1>
+          {/* <p>
+            <span style={color: 'blue'}>G</span>
+            <span style='color: red'>o</span>
+            <span style='color: yellow'>o</span>
+            <span style='color: blue'>g</span>
+            <span style='color: green'>l</span>
+            <span style='color: red'>e</span>
+          </p> */}
           <h2>Hoje</h2>
           <h3>A sugestao é levar os seguintes produtos:</h3>
           <div className="container grid-xs">
