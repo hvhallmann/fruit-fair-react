@@ -22,7 +22,7 @@ class App extends Component {
   }
   getPreviousMonth(currentMonth) {
     let previousMouth = currentMonth - 1;
-    if (previousMouth === -1) previousMouth = 0;
+    if (previousMouth === -1) previousMouth = 11;
     return previousMouth;
   }
   getNextMonth(currentMonth) {
@@ -37,55 +37,48 @@ class App extends Component {
   };
   identifyCards(database) {
     if(!database) return;
-    //reverse db
-    const firstListCards = [];
-    let secListCards = [];
-    let thirdListCards = [];
-    const yellowFirstListCards = [];
-    let yellowSecListCards = [];
-    let yellowThirdListCards = [];
-    database.reverse().forEach(element => {
-      const itemsToIterate = element.season;
 
-      for (var monthIter = 0, len = itemsToIterate.length; monthIter < len; monthIter++) {
-        var item = itemsToIterate[monthIter];
-        const currentMonth = new Date().getMonth();
-        if (item === 'Forte' && (currentMonth === monthIter )) {   
-          firstListCards.push(element);
-          continue;
-        } 
-        else if (item === 'Forte' && (this.getPreviousMonth(currentMonth) === monthIter )) {
-          secListCards.push(element);
-        }  
-        else if (item === 'Forte' && (this.getNextMonth(currentMonth) === monthIter )) {
-          // if (firstListCards.findIndex(el => el.name === element.name) === -1 &&
-          // secListCards.findIndex(el => el.name === element.name) === -1) {
-            console.log('here with', element.name);
-            thirdListCards.push(element);
-          // }
-        }
-        // yellow cases
-        if (item === 'Medio' && (currentMonth === monthIter )) {
-          // console.log('here with', element.name);
-          yellowFirstListCards.push(element);
-        } else if (item === 'Medio' && (this.getPreviousMonth(currentMonth) === monthIter )) {
-          // console.log('here with', element.name);
-          yellowSecListCards.push(element);
-        }  else if (item === 'Medio' && (this.getNextMonth(currentMonth) === monthIter )) {
-          // console.log('here with', element.name);
-          yellowThirdListCards.push(element);
-        }
+    let dbClone = database.slice();
+    let dbClone2 = database.slice();
+    let dbCloneToYellow = database.slice();
+
+    const currentMonth = new Date().getMonth();
+    const firstListCards = database.filter((elem, ind)  => {
+      if (elem.season[currentMonth] === 'Forte') {
+        dbClone.splice(dbClone.indexOf(elem), 1 );        
+        dbClone2.splice(dbClone2.indexOf(elem), 1 );
+        dbCloneToYellow.splice(dbCloneToYellow.indexOf(elem), 1 );
+        return elem;
       }
     });
-    secListCards = secListCards.filter(val => !firstListCards.includes(val));
-    // thirdListCards = thirdListCards.filter(val => !firstListCards.includes(val));
-    // thirdListCards.concat(thirdListCards.filter(val => !secListCards.includes(val)));
-    // thirdListCards = this.uniqueArray(thirdListCards.concat(firstListCards));
-    // thirdListCards = this.uniqueArray(thirdListCards.concat(secListCards));
+
+    const secListCards = dbClone.filter((elem, ind) => {
+      if (elem.season[this.getPreviousMonth(currentMonth)] === 'Forte') {
+        dbClone2.splice( ind, 1 );
+        dbCloneToYellow.splice(dbCloneToYellow.indexOf(elem), 1 );
+        return elem;
+      }
+    });
+
+    const thirdListCards = dbClone2.filter((elem, ind) => {
+      if (elem.season[this.getNextMonth(currentMonth)] === 'Forte') {
+        dbCloneToYellow.splice(dbCloneToYellow.indexOf(elem), 1 );
+        return elem;
+      }
+    });
+
+    const yellowListCards = dbCloneToYellow.filter((elem, ind) => {
+      if (elem.season[currentMonth] === 'Medio'
+      || elem.season[this.getNextMonth(currentMonth)] === 'Medio'
+      || elem.season[this.getPreviousMonth(currentMonth)] === 'Medio') {
+        return elem;
+      }
+    });
     
     this.setState({greenCardsDataProvider: firstListCards});
     this.setState({greenCardsSecTierDataProvider: secListCards});
     this.setState({greenCardsThirdTierDataProvider: thirdListCards});
+    this.setState({yellowCardsDataProvider: yellowListCards});
   }
   render() {
     const listItems = this.state.greenCardsDataProvider && this.state.greenCardsDataProvider.map((elem, index) =>
@@ -95,6 +88,9 @@ class App extends Component {
       <Card key={elem.name + index} className="column col-xs-3" title={elem.name} image={elem.key} />
     );
     const thirdListItems = this.state.greenCardsThirdTierDataProvider && this.state.greenCardsThirdTierDataProvider.map((elem, index) =>
+      <Card key={elem.name + index} className="column col-xs-3" title={elem.name} image={elem.key} />
+    );
+    const yellowListItems = this.state.yellowCardsDataProvider && this.state.yellowCardsDataProvider.map((elem, index) =>
       <Card key={elem.name + index} className="column col-xs-3" title={elem.name} image={elem.key} />
     );
     //https://stackoverflow.com/questions/38268573/how-to-print-each-letter-in-different-color-in-css-html
@@ -119,7 +115,7 @@ class App extends Component {
           </div>
         </section>
         <section>
-          <h3>Bons do mes anterior:</h3>
+          <h4>Boa pedida do mes anterior:</h4>
           <div className="container grid-xs">
             <div className="columns-custom">
               {secListItems}
@@ -127,17 +123,22 @@ class App extends Component {
           </div>
         </section>
         <section>
-          <h3>Saindo do forno para o proximo mes!</h3>
+          <h4>Saindo do forno para o proximo mes!</h4>
           <div className="container grid-xs">
             <div className="columns-custom">
               {thirdListItems}
             </div>
           </div>
         </section>
-        {/*
+        
         <section>
-          <h3>Estes outros produtos voce ainda consegue encontrar:</h3>
-        </section> */}
+          <h4>Estes voce ainda consegue encontrar:</h4>
+          <div className="container grid-xs">
+            <div className="columns-custom">
+              {yellowListItems}
+            </div>
+          </div>
+        </section>
       </div>
     );
   }
