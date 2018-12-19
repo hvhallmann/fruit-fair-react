@@ -50,6 +50,7 @@ class App extends Component {
         dbCloneToYellow.splice(dbCloneToYellow.indexOf(elem), 1 );
         return elem;
       }
+      return null;
     });
 
     const secListCards = dbClone.filter((elem, ind) => {
@@ -58,6 +59,7 @@ class App extends Component {
         dbCloneToYellow.splice(dbCloneToYellow.indexOf(elem), 1 );
         return elem;
       }
+      return null;
     });
 
     const thirdListCards = dbClone2.filter((elem, ind) => {
@@ -65,15 +67,16 @@ class App extends Component {
         dbCloneToYellow.splice(dbCloneToYellow.indexOf(elem), 1 );
         return elem;
       }
+      return null;
     });
 
-    const yellowListCards = dbCloneToYellow.filter((elem, ind) => {
-      if (elem.season[currentMonth] === 'Medio'
+    const yellowListCards = dbCloneToYellow.filter((elem, ind) =>
+      (elem.season[currentMonth] === 'Medio'
       || elem.season[this.getNextMonth(currentMonth)] === 'Medio'
-      || elem.season[this.getPreviousMonth(currentMonth)] === 'Medio') {
-        return elem;
-      }
-    });
+      || elem.season[this.getPreviousMonth(currentMonth)] === 'Medio')
+      ? elem
+      : null
+    );
     
     this.setState({greenCardsDataProvider: firstListCards});
     this.setState({greenCardsSecTierDataProvider: secListCards});
@@ -93,21 +96,26 @@ class App extends Component {
     const yellowListItems = this.state.yellowCardsDataProvider && this.state.yellowCardsDataProvider.map((elem, index) =>
       <Card key={elem.name + index} className="column col-xs-3" title={elem.name} image={elem.key} />
     );
-    //https://stackoverflow.com/questions/38268573/how-to-print-each-letter-in-different-color-in-css-html
     return (
       <div className="App">
         <section>
-          <h1>Feira Fruta</h1>
-          {/* <p>
-            <span style={color: 'blue'}>G</span>
-            <span style='color: red'>o</span>
-            <span style='color: yellow'>o</span>
-            <span style='color: blue'>g</span>
-            <span style='color: green'>l</span>
-            <span style='color: red'>e</span>
-          </p> */}
-          <h2>Hoje</h2>
-          <h3>A sugestao é levar os seguintes produtos:</h3>
+          <p style={{letterSpacing: '0.1em'}}>
+            <span style={{fontSize: '2rem'}}>F</span>
+            <span style={{color: 'blueviolet', fontSize: '2rem'}}>E</span>
+            <span style={{fontSize: '2rem' }}>I</span>
+            <span style={{color: 'cornflowerblue', fontSize: '2rem' }}>R</span>
+            <span style={{color: 'gold', fontSize: '2rem' }}>A </span>
+            <span style={{fontSize: '1rem' }}>d</span>
+            <span style={{fontSize: '1rem' }}>a </span>
+            <span style={{color: 'green', fontSize: '2rem'}}>F</span>
+            <span style={{color: 'blueviolet', fontSize: '2rem'}}>R</span>
+            <span style={{fontSize: '2rem' }}>U</span>
+            <span style={{color: 'cornflowerblue', fontSize: '2rem' }}>T</span>
+            <span style={{color: 'gold', fontSize: '2rem' }}>A </span>
+          </p>
+
+          <h3>Hoje</h3>
+          <h5>A sugestao é levar os seguintes produtos:</h5>
           <div className="container grid-xs">
             <div className="columns-custom">
               {listItems}
@@ -115,7 +123,7 @@ class App extends Component {
           </div>
         </section>
         <section>
-          <h4>Boa pedida do mes anterior:</h4>
+          <h5>Boa pedida do mes anterior:</h5>
           <div className="container grid-xs">
             <div className="columns-custom">
               {secListItems}
@@ -123,7 +131,7 @@ class App extends Component {
           </div>
         </section>
         <section>
-          <h4>Saindo do forno para o proximo mes!</h4>
+          <h5>Saindo do forno para o proximo mes!</h5>
           <div className="container grid-xs">
             <div className="columns-custom">
               {thirdListItems}
@@ -132,7 +140,7 @@ class App extends Component {
         </section>
         
         <section>
-          <h4>Estes voce ainda consegue encontrar:</h4>
+          <h5>Estes voce ainda consegue encontrar:</h5>
           <div className="container grid-xs">
             <div className="columns-custom">
               {yellowListItems}
