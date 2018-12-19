@@ -113,8 +113,9 @@ class App extends Component {
             <span style={{color: 'cornflowerblue', fontSize: '2rem' }}>T</span>
             <span style={{color: 'gold', fontSize: '2rem' }}>A </span>
           </p>
-
-          <h3>Hoje</h3>
+          <p>
+          A sazonalidade é uma característica natural de todos os vegetais e plantas. É relacionada à época em que o cultivo rende frutos naturalmente, sendo colhidos exatamente no tempo certo e nas condições climáticas ideais, o que proporciona um sabor melhor, principalmente nas frutas. Além disso, esses alimentos costumam apresentar preço mais acessível e são bem mais saudáveis em termos de concentração de nutrientes e uso reduzido de agrotóxicos. Por isso, veja quais opções temos HOJE para você escolher na hora de ir à feira:
+          </p>
           <h5>A sugestao é levar os seguintes produtos:</h5>
           <div className="container grid-xs">
             <div className="columns-custom">
